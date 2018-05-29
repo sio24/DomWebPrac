@@ -1,9 +1,6 @@
 var button = document.getElementById("enter");
 var input = document.getElementById("userinput");
 var ul = document.querySelector("ul");
-var li = document.querySelector("li");
-var del = document.getElementById("delete");
-
 
 
 function inputLength(){
@@ -14,7 +11,30 @@ function createListElement(){
 	var li = document.createElement("li");
 		li.appendChild(document.createTextNode(input.value));
 		ul.appendChild(li);
+
+
+		li.addEventListener("click",function(){
+			var finished = this.classList.toggle("done");
+			var removeButton = document.createElement("button");
+
+			removeButton.classList.add("deleteButton");
+
+			if (finished) {
+				removeButton.appendChild(document.createTextNode("remove"));
+				removeButton.classList = "deleteButton";
+				li.appendChild(removeButton);
+
+				removeButton.addEventListener(click,function(){
+					this.parentElement.remove();
+
+				});
+			} else {
+				this.getElementsByClassName("deleteButton")[0].remove();
+			}
+		})
+		
 		input.value = "";
+
 }
 
 function addListAfterClick(){
@@ -29,10 +49,17 @@ function addListAfterKeypress(event){
 	}
 }
 
+function listStrikeThrough(event){
+	var listItem = document.querySelector("li");
+}
+
+function delete
+
+
 
 button.addEventListener("click",addListAfterClick);
 	
-bank
+
 input.addEventListener("keypress", addListAfterKeypress); 
 
 
