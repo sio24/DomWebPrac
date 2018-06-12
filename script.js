@@ -1,234 +1,52 @@
-var undo = false;
-var list_item_to_undo;
-var time_out;
-
-$(document).ready(function(){
-	/*delete*/
-
-	$('body').on('click','.fa-trash',function(){
-		if ($('.main ul li').hasClass("temp_deleted")) {
-			$('.main ul li').hasClass("temp_deleted").remove();
-		}
-
-		list_item_to_undo = $(this).parent().parent();
-		var undo_time = 10000;
-		list_item_to_undo.animate({
-			height:"0px"
-		},200,function(){
-			$(this).addClass('temp_deleted').hide();
-		});
-		function_undo(list_item_to_undo,undo);
-
-		//undo
-
-		$('.undo').addClass('active');
-
-		clearTimeout(time_out);
-
-		time_out=setTimeout(function(){
-			$('.undo').removeClass('active');
-			if (undo === false) {
-				$('.main ul li.temp_deleted').remove();
-			}
-		},undo_time);
-	})
-
-})
-
-
-
-/*DELETE*/
-  
-  
-  /*UNDO*/
-  $('.undo div').click(function(){
-    undo = true;
-    function_undo(list_item_to_undo, undo);
-    $(this).parent().removeClass('active');
-  });
-  
-  
-  /*EDIT*/
-  $('body').on('click', '.fa-pencil', function() {
-     var current = $(this).parent().parent().find('span').text();
-     $(this).parent().parent().find('input[type=text]').val(current).show().select();
-  });
-  
-  
-  $('body').on('keypress', '.main ul li input[type=text]', function(e) {
-      if (e.which == 13) {
-        //hide undo
-        $('.undo').removeClass('active');
-        
-        var newvalue = $(this).val();
-        $(this).parent().parent().find('label span.item-name').text(newvalue);
-        $(this).hide();
-        return false;    //<---- Add this line
-      } 
-  });
-  
-  
-  $(document).on('blur', 'input[type=text]', function() {   
-    $(this).hide();
-  });
-  
-  
-  
-  
-  
-  /*ADD NEW*/
-   $('.add').click(function(){
-    $(this).find('input[type=text]').val('Add new').show().select();
-  });
-  
-  
-  $('body').on('keypress', '.add input[type=text]', function(e) {
-    if (e.which == 13) {
-      
-      //hide undo
-      $('.undo').removeClass('active');
-      
-      var newvalue = $(this).val();
-      
-      var clone = $(".main ul li:first").clone();
-      clone.find('label span.item-name').text(newvalue);
-      
-      var random_num = Math.floor(Math.random() * 1000) + 1 
-      var id = newvalue.replace(/\s/g,'');
-      var ids = id + random_num;
- 
-      clone.find('input').attr({
-          id:ids
-      });      
-     clone.find('label').attr('for', ids);
-     clone.find("input[type=checkbox]").prop('checked', false);  
-     clone.removeClass('priority priority1 priority2 checked');
-     clone.show();
-     clone.appendTo(".main ul");
-      
-      $( '.add' ).trigger( "click" );
-      return false;    //<---- Add this line
-    }
-  });
-  
-  
-  
-  /*PRIORITY*/  
-  $('body').on('click', '.main ul li .actions .prio-btn', function() {
-    
-    if($(this).parent().parent().hasClass("priority2")){
-        
-        $(this).parent().parent().addClass('reset').removeClass("priority priority1 priority2 ");
-      
-      return false;
-    }
-
-    if($(this).parent().parent().hasClass("priority1")){
-        $(this).parent().parent().addClass("priority2");
-    }
-     
-    $(this).parent().parent().addClass('priority priority1');
-         
-  });
-   
-  
-  /*CLICK*/
-  $('body').on('change', '.main ul li input[type=checkbox]', function() {
-    if ($(this).prop('checked')) {
-      $(this).parent().addClass('checked');
-    }else{
-      $(this).parent().removeClass('checked');
-    }
-    
-  });
-  
-  
-  /*SORTABLE*/
-  $( function() {
-    $( ".main ul" ).sortable({
-      animation: 100,
-      delay: 150, 
-      cursor:'move',
-      handle: ".dragger",
-      tolerance: "pointer",
-      axis:'y'
-    });
-    $( "#sortable" ).disableSelection();
-  } );
-  
-  
-
-  
-  
-  
-});
-
-
-function function_undo(list_item_to_undo, undo){  
-  if(undo==true){
-      list_item_to_undo.css('height', 'auto');
-      list_item_to_undo.show();
-      list_item_to_undo.removeClass('temp_deleted');
-  }
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  myNodelist[i].appendChild(span);
 }
 
+var close = document.getElementByClassName("close");
+var i;
+for (i = 0; i < close.length; i++) {
+	close[i].onclick = function() {
+		var div = this.parentElement;
+		div.style.display = "none";
+	}
+}
 
+var list = document.querySelector('ul');
+list.addEventListener('click', function(ev){
+	if(ev.target.tagName === 'LI'){
+		ev.target.classList.toggle('checked');
+	}
+},false);
 
+function newElement(){
+	var li = document.createElement("li");
+	var inputValue = document.getElementById("myInput").value;
+	var t = document.createTextNode(inputValue);
+	li.appendChild(t);
+	if (inputValue === ''){
+		alert("Please add something");
+	}
+	else{
+		document.getElementById("myUL").appendChild(li);
+	}
+	document.getElementById("myInput").value = "";
 
+	var span = document.createElement("SPAN");
+	var txt = document.createTextNode("\u00D7");
+	span.className = "close";
+	span.appendChild(txt);
+	li.appendChild(span);
 
-
-
-
-
-
-
-
-
-
-
-
-// var button = document.getElementById("enter");
-// var input = document.getElementById("userinput");
-// var ul = document.querySelector("ul");
-
-// function inputLength() {
-// 	return input.value.length;
-// }
-
-// function createListElement() {
-// 	var li = document.createElement("li");
-// 	li.appendChild(document.createTextNode(input.value));
-	
-
-// 	li.addEventListener("click",function(event){
-// 		event.target.classList.toggle("done");
-// 	});
-
-// 	ul.appendChild(li);
-// 	input.value = "";
-// 	li.appendChild(document.createTextNode(" "));
-// 	var delButton = li.appendChild(document.createElement("button"));
-// 	delButton.appendChild(document.createTextNode("Delete"))
-// 	delButton.className = "btn btn-xs btn-info";
-
-// 	delButton.addEventListener("click", function(event){
-// 		event.target.parentElement.classList.add("goAway");
-// 	})
-
-// }
-
-// function addListAfterClick() {
-// 	if (inputLength() > 0) {
-// 		createListElement();
-// 	}
-// }
-
-// function addListAfterKeypress(event) {
-// 	if (inputLength() > 0 && event.keyCode === 13) {
-// 		createListElement();
-// 	}
-// }
-
-// button.addEventListener("click", addListAfterClick);
-
-// input.addEventListener("keypress", addListAfterKeypress);
+	  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+    }
+  }
+}
