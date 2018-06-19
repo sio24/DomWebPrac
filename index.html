@@ -5,22 +5,35 @@
 	<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<script  src="script.js" type="text/javascript"></script>
+	
 </head>
 	<body>
-		<div class="header">
+		
 			<h1>Shopping List</h1>
-			<input type="text" id="myInput" placeholder="Add item here"/>
-			<span onclick="newElement()" class="addBtn">Add</span>
-		</div>
+			<p id="first">Get it done today</p>
+			<p class="second">No Excuses</p>
+			<input id="userInput" type="text" placeholder="Enter Items" >
+			<button id="Add">Add</button>
 
-		<ul id="myUL">
-			<li>Books</li>
-			<li class="chkDone">eggs</li>
+		
+		<ul class="shpList" id="shpList">
+			<li>
+				Books
+				<!-- <div class="delete">
+					<button class="btnDel">Delete</button>
+					<button class="btnDone">Done</button>
+				</div> -->
+			</li>
+			<li>eggs</li>
 			<li>chicken</li>
 			<li>cake</li>
 			<li>milk</li>
 		</ul>
+
+		<!-- <ul class="shpList" id="done"> -->
+			
+		</ul>
+		<script  src="script.js" type="text/javascript"></script>
 	</body>
 </html>
 	

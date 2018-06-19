@@ -1,52 +1,58 @@
-var myNodelist = document.getElementsByTagName("LI");
-var i;
-for (i = 0; i < myNodelist.length; i++) {
-  var span = document.createElement("SPAN");
-  var txt = document.createTextNode("\u00D7");
-  span.className = "close";
-  span.appendChild(txt);
-  myNodelist[i].appendChild(span);
+var button = document.getElementById("Add");
+var input = document.getElementById("userInput");
+var ul = document.querySelector("ul");
+
+
+
+function inputLength(){
+	return input.value.length;
 }
 
-var close = document.getElementByClassName("close");
-var i;
-for (i = 0; i < close.length; i++) {
-	close[i].onclick = function() {
-		var div = this.parentElement;
-		div.style.display = "none";
-	}
-}
-
-var list = document.querySelector('ul');
-list.addEventListener('click', function(ev){
-	if(ev.target.tagName === 'LI'){
-		ev.target.classList.toggle('checked');
-	}
-},false);
-
-function newElement(){
+function createListElement(){
 	var li = document.createElement("li");
-	var inputValue = document.getElementById("myInput").value;
-	var t = document.createTextNode(inputValue);
-	li.appendChild(t);
-	if (inputValue === ''){
-		alert("Please add something");
-	}
-	else{
-		document.getElementById("myUL").appendChild(li);
-	}
-	document.getElementById("myInput").value = "";
-
-	var span = document.createElement("SPAN");
-	var txt = document.createTextNode("\u00D7");
-	span.className = "close";
-	span.appendChild(txt);
-	li.appendChild(span);
-
-	  for (i = 0; i < close.length; i++) {
-    close[i].onclick = function() {
-      var div = this.parentElement;
-      div.style.display = "none";
-    }
-  }
+	li.appendChild(document.createTextNode(input.value));
+	ul.appendChild(li);
+	input.value = "";
 }
+
+function getEventTarget(e){
+	e = e || window.event;
+	return e.target || e.srcElement;
+}
+
+ul.onclick = function(event){
+	var target = getEventTarget(event);
+	target.classList.toggle("done");
+}
+
+function addListClick(){
+	if(inputLength() > 0) {
+		createListElement();
+	}
+}
+
+function addListKeypress(event) {
+	if (inputLength() > 0 && event.keyCode == 13) {
+		 createListElement();
+	}
+}
+
+
+
+button.addEventListener("click", addListClick);
+
+input.addEventListener("keypress", addListKeypress);
+
+
+
+	
+
+
+
+
+
+
+
+	
+
+
